@@ -2,146 +2,220 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Malla Curricular - Administración de Empresas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-    }
-    header {
-      background: #004080;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      padding: 20px;
-    }
-    .semestre {
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    }
-    .semestre h2 {
-      font-size: 18px;
-      margin-bottom: 10px;
-      color: #004080;
-    }
-    .materia {
-      background: #e6f0ff;
-      margin-bottom: 10px;
-      padding: 8px;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    footer {
-      background: #004080;
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      margin-top: 20px;
-    }
-    @media (max-width: 900px) {
-      .container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (max-width: 600px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Malla Interactiva - Administración de Empresas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .semestre {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .semestre h2 {
+            margin-top: 0;
+            color: #003366;
+        }
+        ul.materias {
+            list-style: none;
+            padding-left: 0;
+        }
+        ul.materias li {
+            padding: 6px 8px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        ul.materias li:hover:not(.locked) {
+            background-color: #e0f0ff;
+        }
+        ul.materias li.completed {
+            text-decoration: line-through;
+            color: #888888;
+            background-color: #d3ffd3;
+            cursor: default;
+        }
+        ul.materias li.locked {
+            color: #bbb;
+            cursor: not-allowed;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Malla Curricular - Administración de Empresas</h1>
-    <h3>Universidad de las Fuerzas Armadas - ESPE</h3>
-  </header>
-  <div class="container">
-    <div class="semestre">
-      <h2>1er Semestre</h2>
-      <div class="materia">Cálculo Diferencial e Integral</div>
-      <div class="materia">Matemática Financiera</div>
-      <div class="materia">Contabilidad I</div>
-      <div class="materia">Administración</div>
-      <div class="materia">Derecho Laboral, Societario y Mercantil</div>
-      <div class="materia">Metodología de la Investigación Científica</div>
+
+    <h1>Malla Interactiva - Administración de Empresas</h1>
+
+    <div id="malla">
+
+        <!-- Semestres -->
+        <div class="semestre" data-sem="1">
+            <h2>Primer Semestre</h2>
+            <ul class="materias">
+                <li data-next="2" class="active">Matemáticas I</li>
+                <li data-next="2" class="active">Introducción a la Administración</li>
+                <li data-next="2" class="active">Contabilidad I</li>
+                <li data-next="2" class="active">Comunicación Oral y Escrita</li>
+                <li data-next="2" class="active">Derecho Empresarial</li>
+                <li data-next="2" class="active">Fundamentos de Economía</li>
+            </ul>
+        </div>
+
+        <div class="semestre" data-sem="2">
+            <h2>Segundo Semestre</h2>
+            <ul class="materias">
+                <li data-next="3" class="locked">Matemáticas II</li>
+                <li data-next="3" class="locked">Estadística I</li>
+                <li data-next="3" class="locked">Contabilidad II</li>
+                <li data-next="3" class="locked">Teoría de la Administración</li>
+                <li data-next="3" class="locked">Microeconomía</li>
+                <li data-next="3" class="locked">Mercadotecnia I</li>
+            </ul>
+        </div>
+
+        <div class="semestre" data-sem="3">
+            <h2>Tercer Semestre</h2>
+            <ul class="materias">
+                <li data-next="4" class="locked">Matemáticas III</li>
+                <li data-next="4" class="locked">Estadística II</li>
+                <li data-next="4" class="locked">Contabilidad III</li>
+                <li data-next="4" class="locked">Macroeconomía</li>
+                <li data-next="4" class="locked">Mercadotecnia II</li>
+                <li data-next="4" class="locked">Derecho Laboral</li>
+            </ul>
+        </div>
+
+        <div class="semestre" data-sem="4">
+            <h2>Cuarto Semestre</h2>
+            <ul class="materias">
+                <li data-next="5" class="locked">Investigación de Mercados</li>
+                <li data-next="5" class="locked">Finanzas I</li>
+                <li data-next="5" class="locked">Gestión de Recursos Humanos</li>
+                <li data-next="5" class="locked">Costos y Presupuestos</li>
+                <li data-next="5" class="locked">Comportamiento Organizacional</li>
+                <li data-next="5" class="locked">Sistemas de Información</li>
+            </ul>
+        </div>
+
+        <div class="semestre" data-sem="5">
+            <h2>Quinto Semestre</h2>
+            <ul class="materias">
+                <li data-next="6" class="locked">Finanzas II</li>
+                <li data-next="6" class="locked">Comercio Internacional</li>
+                <li data-next="6" class="locked">Planificación Estratégica</li>
+                <li data-next="6" class="locked">Producción y Operaciones</li>
+                <li data-next="6" class="locked">Legislación Comercial</li>
+                <li data-next="6" class="locked">Administración de Proyectos</li>
+            </ul>
+        </div>
+
+        <div class="semestre" data-sem="6">
+            <h2>Sexto Semestre</h2>
+            <ul class="materias">
+                <li data-next="7" class="locked">Auditoría</li>
+                <li data-next="7" class="locked">Gestión de Calidad</li>
+                <li data-next="7" class="locked">Emprendimiento</li>
+                <li data-next="7" class="locked">Ética Profesional</li>
+                <li data-next="7" class="locked">Administración Financiera</li>
+                <li data-next="7" class="locked">Negocios Electrónicos</li>
+            </ul>
+        </div>
+
+        <div class="semestre" data-sem="7">
+            <h2>Séptimo Semestre</h2>
+            <ul class="materias">
+                <li data-next="8" class="locked">Administración de la Producción</li>
+                <li data-next="8" class="locked">Innovación Empresarial</li>
+                <li data-next="8" class="locked">Toma de Decisiones</li>
+                <li data-next="8" class="locked">Gestión del Talento Humano</li>
+                <li data-next="8" class="locked">Responsabilidad Social</li>
+                <li data-next="8" class="locked">Análisis Financiero</li>
+            </ul>
+        </div>
+
+        <div class="semestre" data-sem="8">
+            <h2>Octavo Semestre</h2>
+            <ul class="materias">
+                <li class="locked">Trabajo de Titulación</li>
+                <li class="locked">Seminario de Investigación</li>
+                <li class="locked">Electiva I</li>
+                <li class="locked">Electiva II</li>
+                <li class="locked">Prácticas Empresariales</li>
+            </ul>
+        </div>
+
     </div>
-    <div class="semestre">
-      <h2>2do Semestre</h2>
-      <div class="materia">Estadística</div>
-      <div class="materia">Mercadotecnia</div>
-      <div class="materia">Contabilidad de Costos</div>
-      <div class="materia">Procesos</div>
-      <div class="materia">Programación, Redes y Bases de Datos</div>
-      <div class="materia">Liderazgo</div>
-    </div>
-    <div class="semestre">
-      <h2>3er Semestre</h2>
-      <div class="materia">Herramientas para la Toma de Decisiones I</div>
-      <div class="materia">Microeconomía</div>
-      <div class="materia">Finanzas a Corto Plazo</div>
-      <div class="materia">Teoría y Estructura de la Organización</div>
-      <div class="materia">Investigación de Mercados</div>
-      <div class="materia">Realidad Nacional y Geopolítica</div>
-    </div>
-    <div class="semestre">
-      <h2>4to Semestre</h2>
-      <div class="materia">Gestión del Talento Humano</div>
-      <div class="materia">Macroeconomía</div>
-      <div class="materia">Finanzas de Largo Plazo</div>
-      <div class="materia">Gestión Estratégica</div>
-      <div class="materia">Sistemas de Información para los Negocios</div>
-      <div class="materia">Gestión Tributaria</div>
-    </div>
-    <div class="semestre">
-      <h2>5to Semestre</h2>
-      <div class="materia">Cultura y Comportamiento Organizacional</div>
-      <div class="materia">Métodos Cuantitativos</div>
-      <div class="materia">Administración Presupuestaria</div>
-      <div class="materia">Gestión de la Calidad</div>
-      <div class="materia">Mercadotecnia Estratégica</div>
-      <div class="materia">Gestión del Conocimiento Aplicado</div>
-    </div>
-    <div class="semestre">
-      <h2>6to Semestre</h2>
-      <div class="materia">Auditoría Administrativa y Financiera</div>
-      <div class="materia">Administración de la Producción</div>
-      <div class="materia">Gestión de Servicios</div>
-      <div class="materia">Gestión y Emprendimiento</div>
-      <div class="materia">Gestión Integral de Riesgos</div>
-    </div>
-    <div class="semestre">
-      <h2>7mo Semestre</h2>
-      <div class="materia">Diseño y Evaluación de Proyectos</div>
-      <div class="materia">Finanzas Corporativas</div>
-      <div class="materia">Logística Empresarial</div>
-      <div class="materia">E-Business / E-Commerce</div>
-      <div class="materia">Gerencia de Proyectos</div>
-      <div class="materia">ABP (Aprendizaje Basado en Problemas)</div>
-    </div>
-    <div class="semestre">
-      <h2>8vo Semestre</h2>
-      <div class="materia">Planificación Estratégica Prospectiva</div>
-      <div class="materia">Empresa, Bioética y Responsabilidad Social</div>
-      <div class="materia">Negociación y Manejo de Crisis</div>
-      <div class="materia">Prácticas de Servicio Comunitario</div>
-      <div class="materia">Prácticas Laborales</div>
-      <div class="materia">Trabajo de Integración Curricular</div>
-    </div>
-  </div>
-  <footer>
-    <p>© 2025 Universidad de las Fuerzas Armadas - ESPE</p>
-  </footer>
+
+    <script>
+        // Al cargar la página, activar solo el primer semestre
+        document.addEventListener('DOMContentLoaded', () => {
+            const materias = document.querySelectorAll('ul.materias li');
+            materias.forEach(materia => {
+                if (!materia.classList.contains('locked')) {
+                    materia.classList.add('active');
+                }
+            });
+
+            // Listener para click en materias activas
+            materias.forEach(materia => {
+                materia.addEventListener('click', () => {
+                    if (materia.classList.contains('locked') || materia.classList.contains('completed')) {
+                        return; // No hace nada si está bloqueada o ya completada
+                    }
+                    // Marcar como completada
+                    materia.classList.toggle('completed');
+
+                    // Si está completada, desbloquear el siguiente semestre
+                    if (materia.classList.contains('completed')) {
+                        const nextSem = materia.getAttribute('data-next');
+                        if (nextSem) {
+                            desbloquearSemestre(nextSem);
+                        }
+                    } else {
+                        // Si se desmarca, bloquear los semestres posteriores
+                        bloquearSemestresPosteriores(parseInt(materia.closest('.semestre').dataset.sem) + 1);
+                    }
+                });
+            });
+
+            function desbloquearSemestre(numSemestre) {
+                const semestre = document.querySelector(`.semestre[data-sem="${numSemestre}"]`);
+                if (!semestre) return;
+                const materias = semestre.querySelectorAll('li.locked');
+                materias.forEach(materia => {
+                    materia.classList.remove('locked');
+                    materia.classList.add('active');
+                });
+            }
+
+            function bloquearSemestresPosteriores(inicio) {
+                for (let i = inicio; i <= 8; i++) {
+                    const semestre = document.querySelector(`.semestre[data-sem="${i}"]`);
+                    if (!semestre) continue;
+                    const materias = semestre.querySelectorAll('li');
+                    materias.forEach(materia => {
+                        materia.classList.remove('active', 'completed');
+                        materia.classList.add('locked');
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 
