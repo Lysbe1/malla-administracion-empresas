@@ -3,16 +3,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Malla Curricular - Administración de Empresas</title>
+  <title>Malla Interactiva - Administración de Empresas</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
       margin: 0;
-      padding: 0;
+      background: #f9f9f9;
     }
     header {
-      background-color: #004080;
+      background: #800000;
       color: white;
       text-align: center;
       padding: 20px;
@@ -24,42 +23,46 @@
       padding: 20px;
     }
     .semestre {
-      background-color: white;
-      border: 1px solid #ccc;
+      background: white;
+      border-radius: 10px;
       padding: 15px;
-      border-radius: 8px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
     .semestre h2 {
-      font-size: 18px;
-      color: #004080;
-      margin-bottom: 10px;
+      text-align: center;
+      color: #800000;
+      margin-bottom: 15px;
     }
     .materia {
-      background: #e6f0ff;
-      margin-bottom: 8px;
-      padding: 8px;
-      border-radius: 5px;
-      font-size: 14px;
+      background: #d9534f;
+      color: white;
+      margin: 8px;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
       cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
     }
-    .materia.locked {
-      background: #eee;
-      color: #888;
-      cursor: not-allowed;
+    .materia:hover {
+      transform: scale(1.03);
     }
     .materia.completed {
       text-decoration: line-through;
-      background: #d4edda;
-      color: #155724;
+      background: #f5c6cb;
+      color: #6a1b1b;
+    }
+    .materia.locked {
+      background: #ccc;
+      color: #666;
+      cursor: not-allowed;
     }
     footer {
-      background-color: #004080;
+      background: #800000;
       color: white;
       text-align: center;
       padding: 10px;
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
       .container {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -73,8 +76,7 @@
 </head>
 <body>
 <header>
-  <h1>Malla Curricular - Administración de Empresas</h1>
-  <h3>Universidad de las Fuerzas Armadas - ESPE</h3>
+  <h1>Malla Interactiva - Administración de Empresas</h1>
 </header>
 
 <div class="container" id="mallaContainer"></div>
@@ -150,28 +152,26 @@ const materias = {
   ]
 };
 
-function createSemestre(title, materias) {
+function createSemestre(nombre, listaMaterias) {
   const div = document.createElement('div');
   div.className = 'semestre';
   const h2 = document.createElement('h2');
-  h2.textContent = title;
+  h2.textContent = nombre;
   div.appendChild(h2);
-
-  materias.forEach(m => {
-    const matDiv = document.createElement('div');
-    matDiv.className = 'materia';
-    matDiv.id = m.id;
-    matDiv.textContent = m.nombre;
-    if (m.prereq) matDiv.classList.add('locked');
-    matDiv.addEventListener('click', () => {
-      if (matDiv.classList.contains('locked')) return;
-      matDiv.classList.toggle('completed');
-      localStorage.setItem(m.id, matDiv.classList.contains('completed'));
+  listaMaterias.forEach(m => {
+    const mat = document.createElement('div');
+    mat.className = 'materia';
+    mat.id = m.id;
+    mat.textContent = m.nombre;
+    if (m.prereq) mat.classList.add('locked');
+    mat.addEventListener('click', () => {
+      if (mat.classList.contains('locked')) return;
+      mat.classList.toggle('completed');
+      localStorage.setItem(m.id, mat.classList.contains('completed'));
       updateMaterias();
     });
-    div.appendChild(matDiv);
+    div.appendChild(mat);
   });
-
   return div;
 }
 
@@ -185,7 +185,7 @@ function updateMaterias() {
         el.classList.remove('locked');
       }
       if (m.prereq) {
-        const ready = m.prereq.every(pr => localStorage.getItem(pr) === 'true');
+        const ready = m.prereq.every(p => localStorage.getItem(p) === 'true');
         el.classList.toggle('locked', !ready);
       }
     });
@@ -193,8 +193,8 @@ function updateMaterias() {
 }
 
 const container = document.getElementById('mallaContainer');
-for (const [semestre, lista] of Object.entries(materias)) {
-  container.appendChild(createSemestre(semestre, lista));
+for (const [semestre, materias] of Object.entries(materias)) {
+  container.appendChild(createSemestre(semestre, materias));
 }
 updateMaterias();
 </script>
