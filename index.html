@@ -18,7 +18,7 @@
     }
     .container {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       padding: 20px;
     }
@@ -31,17 +31,23 @@
     .semestre h2 {
       text-align: center;
       color: #800000;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+    }
+    .materias-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
     }
     .materia {
       background: #d9534f;
       color: white;
-      margin: 8px;
-      padding: 10px;
+      padding: 10px 12px;
       border-radius: 6px;
       text-align: center;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
+      min-width: 180px;
     }
     .materia:hover {
       transform: scale(1.03);
@@ -64,141 +70,141 @@
     }
     @media (max-width: 1000px) {
       .container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (max-width: 600px) {
-      .container {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-<header>
-  <h1>Malla Interactiva - Administración de Empresas</h1>
-</header>
+  <header>
+    <h1>Malla Interactiva - Administración de Empresas</h1>
+  </header>
 
-<div class="container" id="mallaContainer"></div>
+  <div class="container" id="mallaContainer"></div>
 
-<footer>
-  <p>© 2025 Universidad de las Fuerzas Armadas - ESPE</p>
-</footer>
+  <footer>
+    <p>© 2025 Universidad de las Fuerzas Armadas - ESPE</p>
+  </footer>
 
-<script>
-const materias = {
-  '1er Semestre': [
-    { id: 'calculo', nombre: 'Cálculo Diferencial e Integral' },
-    { id: 'mat_fin', nombre: 'Matemática Financiera' },
-    { id: 'cont1', nombre: 'Contabilidad I' },
-    { id: 'admin', nombre: 'Administración' },
-    { id: 'derecho', nombre: 'Derecho Laboral, Societario y Mercantil' },
-    { id: 'met_invest', nombre: 'Metodología de la Investigación Científica' }
-  ],
-  '2do Semestre': [
-    { id: 'estadistica', nombre: 'Estadística', prereq: ['calculo'] },
-    { id: 'mkt', nombre: 'Mercadotecnia', prereq: ['admin'] },
-    { id: 'costos', nombre: 'Contabilidad de Costos', prereq: ['cont1'] },
-    { id: 'procesos', nombre: 'Procesos', prereq: ['admin'] },
-    { id: 'programacion', nombre: 'Programación, Redes y BD' },
-    { id: 'liderazgo', nombre: 'Liderazgo', prereq: ['admin'] }
-  ],
-  '3er Semestre': [
-    { id: 'decision1', nombre: 'Herramientas para la Toma de Decisiones I', prereq: ['calculo', 'estadistica'] },
-    { id: 'micro', nombre: 'Microeconomía', prereq: ['calculo'] },
-    { id: 'fin_corto', nombre: 'Finanzas a Corto Plazo', prereq: ['costos'] },
-    { id: 'teoria_org', nombre: 'Teoría y Estructura de la Organización', prereq: ['procesos'] },
-    { id: 'inv_merc', nombre: 'Investigación de Mercados', prereq: ['estadistica', 'mkt'] },
-    { id: 'realidad', nombre: 'Realidad Nacional y Geopolítica', prereq: ['liderazgo'] }
-  ],
-  '4to Semestre': [
-    { id: 'talento', nombre: 'Gestión del Talento Humano', prereq: ['teoria_org'] },
-    { id: 'macro', nombre: 'Macroeconomía', prereq: ['micro'] },
-    { id: 'fin_largo', nombre: 'Finanzas de Largo Plazo', prereq: ['fin_corto'] },
-    { id: 'estrategica', nombre: 'Gestión Estratégica', prereq: ['teoria_org', 'inv_merc'] },
-    { id: 'sis_info', nombre: 'Sistemas de Información para los Negocios', prereq: ['teoria_org', 'inv_merc', 'estadistica'] },
-    { id: 'tributaria', nombre: 'Gestión Tributaria', prereq: ['costos', 'fin_corto'] }
-  ],
-  '5to Semestre': [
-    { id: 'cultura_org', nombre: 'Cultura y Comportamiento Organizacional', prereq: ['talento'] },
-    { id: 'met_cuant', nombre: 'Métodos Cuantitativos', prereq: ['estadistica', 'calculo', 'sis_info'] },
-    { id: 'presupuesto', nombre: 'Administración Presupuestaria', prereq: ['fin_largo', 'tributaria', 'macro'] },
-    { id: 'calidad', nombre: 'Gestión de la Calidad', prereq: ['estrategica', 'procesos', 'teoria_org'] },
-    { id: 'mkt_estrategica', nombre: 'Mercadotecnia Estratégica', prereq: ['estrategica', 'inv_merc'] },
-    { id: 'conocimiento', nombre: 'Gestión del Conocimiento Aplicado', prereq: ['cultura_org', 'estrategica'] }
-  ],
-  '6to Semestre': [
-    { id: 'auditoria', nombre: 'Auditoría Administrativa y Financiera', prereq: ['presupuesto'] },
-    { id: 'produccion', nombre: 'Administración de la Producción', prereq: ['procesos', 'calidad'] },
-    { id: 'servicios', nombre: 'Gestión de Servicios', prereq: ['mkt_estrategica', 'calidad'] },
-    { id: 'emprendimiento', nombre: 'Gestión y Emprendimiento', prereq: ['liderazgo', 'realidad'] },
-    { id: 'riesgos', nombre: 'Gestión Integral de Riesgos', prereq: ['fin_largo'] }
-  ],
-  '7mo Semestre': [
-    { id: 'diseno_proyectos', nombre: 'Diseño y Evaluación de Proyectos', prereq: ['fin_largo', 'inv_merc', 'calidad'] },
-    { id: 'fin_corp', nombre: 'Finanzas Corporativas', prereq: ['presupuesto'] },
-    { id: 'logistica', nombre: 'Logística Empresarial', prereq: ['calidad', 'produccion'] },
-    { id: 'ecommerce', nombre: 'E-Business / E-Commerce', prereq: ['mkt_estrategica'] },
-    { id: 'gerencia', nombre: 'Gerencia de Proyectos', prereq: ['diseno_proyectos'] },
-    { id: 'abp', nombre: 'ABP (Aprendizaje Basado en Problemas)', prereq: ['riesgos', 'diseno_proyectos', 'fin_corp', 'logistica', 'ecommerce'] }
-  ],
-  '8vo Semestre': [
-    { id: 'plan_estrat', nombre: 'Planificación Estratégica Prospectiva', prereq: ['estrategica'] },
-    { id: 'etica', nombre: 'Empresa, Bioética y Responsabilidad Social', prereq: ['fin_corp', 'estrategica'] },
-    { id: 'negociacion', nombre: 'Negociación y Manejo de Crisis', prereq: ['talento'] },
-    { id: 'comunitario', nombre: 'Prácticas de Servicio Comunitario' },
-    { id: 'practicas', nombre: 'Prácticas Laborales' },
-    { id: 'tic', nombre: 'Trabajo de Integración Curricular', prereq: ['comunitario', 'practicas'] }
-  ]
-};
+  <script>
+    const materias = {
+      '1er Semestre': [
+        { id: 'calculo', nombre: 'Cálculo Diferencial e Integral' },
+        { id: 'mat_fin', nombre: 'Matemática Financiera' },
+        { id: 'cont1', nombre: 'Contabilidad I' },
+        { id: 'admin', nombre: 'Administración' },
+        { id: 'derecho', nombre: 'Derecho Laboral, Societario y Mercantil' },
+        { id: 'met_invest', nombre: 'Metodología de la Investigación Científica' }
+      ],
+      '2do Semestre': [
+        { id: 'estadistica', nombre: 'Estadística', prereq: ['calculo'] },
+        { id: 'mkt', nombre: 'Mercadotecnia', prereq: ['admin'] },
+        { id: 'costos', nombre: 'Contabilidad de Costos', prereq: ['cont1'] },
+        { id: 'procesos', nombre: 'Procesos', prereq: ['admin'] },
+        { id: 'programacion', nombre: 'Programación, Redes y BD' },
+        { id: 'liderazgo', nombre: 'Liderazgo', prereq: ['admin'] }
+      ],
+      '3er Semestre': [
+        { id: 'decision1', nombre: 'Herramientas para la Toma de Decisiones I', prereq: ['calculo', 'estadistica'] },
+        { id: 'micro', nombre: 'Microeconomía', prereq: ['calculo'] },
+        { id: 'fin_corto', nombre: 'Finanzas a Corto Plazo', prereq: ['costos'] },
+        { id: 'teoria_org', nombre: 'Teoría y Estructura de la Organización', prereq: ['procesos'] },
+        { id: 'inv_merc', nombre: 'Investigación de Mercados', prereq: ['estadistica', 'mkt'] },
+        { id: 'realidad', nombre: 'Realidad Nacional y Geopolítica', prereq: ['liderazgo'] }
+      ],
+      '4to Semestre': [
+        { id: 'talento', nombre: 'Gestión del Talento Humano', prereq: ['teoria_org'] },
+        { id: 'macro', nombre: 'Macroeconomía', prereq: ['micro'] },
+        { id: 'fin_largo', nombre: 'Finanzas de Largo Plazo', prereq: ['fin_corto'] },
+        { id: 'estrategica', nombre: 'Gestión Estratégica', prereq: ['teoria_org', 'inv_merc'] },
+        { id: 'sis_info', nombre: 'Sistemas de Información para los Negocios', prereq: ['teoria_org', 'inv_merc', 'estadistica'] },
+        { id: 'tributaria', nombre: 'Gestión Tributaria', prereq: ['costos', 'fin_corto'] }
+      ],
+      '5to Semestre': [
+        { id: 'cultura_org', nombre: 'Cultura y Comportamiento Organizacional', prereq: ['talento'] },
+        { id: 'met_cuant', nombre: 'Métodos Cuantitativos', prereq: ['estadistica', 'calculo', 'sis_info'] },
+        { id: 'presupuesto', nombre: 'Administración Presupuestaria', prereq: ['fin_largo', 'tributaria', 'macro'] },
+        { id: 'calidad', nombre: 'Gestión de la Calidad', prereq: ['estrategica', 'procesos', 'teoria_org'] },
+        { id: 'mkt_estrategica', nombre: 'Mercadotecnia Estratégica', prereq: ['estrategica', 'inv_merc'] },
+        { id: 'conocimiento', nombre: 'Gestión del Conocimiento Aplicado', prereq: ['cultura_org', 'estrategica'] }
+      ],
+      '6to Semestre': [
+        { id: 'auditoria', nombre: 'Auditoría Administrativa y Financiera', prereq: ['presupuesto'] },
+        { id: 'produccion', nombre: 'Administración de la Producción', prereq: ['procesos', 'calidad'] },
+        { id: 'servicios', nombre: 'Gestión de Servicios', prereq: ['mkt_estrategica', 'calidad'] },
+        { id: 'emprendimiento', nombre: 'Gestión y Emprendimiento', prereq: ['liderazgo', 'realidad'] },
+        { id: 'riesgos', nombre: 'Gestión Integral de Riesgos', prereq: ['fin_largo'] }
+      ],
+      '7mo Semestre': [
+        { id: 'diseno_proyectos', nombre: 'Diseño y Evaluación de Proyectos', prereq: ['fin_largo', 'inv_merc', 'calidad'] },
+        { id: 'fin_corp', nombre: 'Finanzas Corporativas', prereq: ['presupuesto'] },
+        { id: 'logistica', nombre: 'Logística Empresarial', prereq: ['calidad', 'produccion'] },
+        { id: 'ecommerce', nombre: 'E-Business / E-Commerce', prereq: ['mkt_estrategica'] },
+        { id: 'gerencia', nombre: 'Gerencia de Proyectos', prereq: ['diseno_proyectos'] },
+        { id: 'abp', nombre: 'ABP (Aprendizaje Basado en Problemas)', prereq: ['riesgos', 'diseno_proyectos', 'fin_corp', 'logistica', 'ecommerce'] }
+      ],
+      '8vo Semestre': [
+        { id: 'plan_estrat', nombre: 'Planificación Estratégica Prospectiva', prereq: ['estrategica'] },
+        { id: 'etica', nombre: 'Empresa, Bioética y Responsabilidad Social', prereq: ['fin_corp', 'estrategica'] },
+        { id: 'negociacion', nombre: 'Negociación y Manejo de Crisis', prereq: ['talento'] },
+        { id: 'comunitario', nombre: 'Prácticas de Servicio Comunitario' },
+        { id: 'practicas', nombre: 'Prácticas Laborales' },
+        { id: 'tic', nombre: 'Trabajo de Integración Curricular', prereq: ['comunitario', 'practicas'] }
+      ]
+    };
 
-function createSemestre(nombre, listaMaterias) {
-  const div = document.createElement('div');
-  div.className = 'semestre';
-  const h2 = document.createElement('h2');
-  h2.textContent = nombre;
-  div.appendChild(h2);
-  listaMaterias.forEach(m => {
-    const mat = document.createElement('div');
-    mat.className = 'materia';
-    mat.id = m.id;
-    mat.textContent = m.nombre;
-    if (m.prereq) mat.classList.add('locked');
-    mat.addEventListener('click', () => {
-      if (mat.classList.contains('locked')) return;
-      mat.classList.toggle('completed');
-      localStorage.setItem(m.id, mat.classList.contains('completed'));
-      updateMaterias();
-    });
-    div.appendChild(mat);
-  });
-  return div;
-}
+    function createSemestre(nombre, listaMaterias) {
+      const div = document.createElement('div');
+      div.className = 'semestre';
+      const h2 = document.createElement('h2');
+      h2.textContent = nombre;
+      div.appendChild(h2);
 
-function updateMaterias() {
-  for (const [semestre, lista] of Object.entries(materias)) {
-    lista.forEach(m => {
-      const el = document.getElementById(m.id);
-      const done = localStorage.getItem(m.id) === 'true';
-      if (done) {
-        el.classList.add('completed');
-        el.classList.remove('locked');
+      const grid = document.createElement('div');
+      grid.className = 'materias-grid';
+
+      listaMaterias.forEach(m => {
+        const mat = document.createElement('div');
+        mat.className = 'materia';
+        mat.id = m.id;
+        mat.textContent = m.nombre;
+        if (m.prereq) mat.classList.add('locked');
+        mat.addEventListener('click', () => {
+          if (mat.classList.contains('locked')) return;
+          mat.classList.toggle('completed');
+          localStorage.setItem(m.id, mat.classList.contains('completed'));
+          updateMaterias();
+        });
+        grid.appendChild(mat);
+      });
+      div.appendChild(grid);
+      return div;
+    }
+
+    function updateMaterias() {
+      for (const [semestre, lista] of Object.entries(materias)) {
+        lista.forEach(m => {
+          const el = document.getElementById(m.id);
+          const done = localStorage.getItem(m.id) === 'true';
+          if (done) {
+            el.classList.add('completed');
+            el.classList.remove('locked');
+          }
+          if (m.prereq) {
+            const ready = m.prereq.every(p => localStorage.getItem(p) === 'true');
+            el.classList.toggle('locked', !ready);
+          }
+        });
       }
-      if (m.prereq) {
-        const ready = m.prereq.every(p => localStorage.getItem(p) === 'true');
-        el.classList.toggle('locked', !ready);
-      }
-    });
-  }
-}
+    }
 
-const container = document.getElementById('mallaContainer');
-for (const [semestre, materias] of Object.entries(materias)) {
-  container.appendChild(createSemestre(semestre, materias));
-}
-updateMaterias();
-</script>
-
+    const container = document.getElementById('mallaContainer');
+    for (const [semestre, materias] of Object.entries(materias)) {
+      container.appendChild(createSemestre(semestre, materias));
+    }
+    updateMaterias();
+  </script>
 </body>
 </html>
+
     
