@@ -2,221 +2,203 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Malla Interactiva - Administración de Empresas</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-            max-width: 900px;
-            margin: auto;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .semestre {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        .semestre h2 {
-            margin-top: 0;
-            color: #003366;
-        }
-        ul.materias {
-            list-style: none;
-            padding-left: 0;
-        }
-        ul.materias li {
-            padding: 6px 8px;
-            margin-bottom: 5px;
-            border-radius: 4px;
-            cursor: pointer;
-            user-select: none;
-            border: 1px solid transparent;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        ul.materias li:hover:not(.locked) {
-            background-color: #e0f0ff;
-        }
-        ul.materias li.completed {
-            text-decoration: line-through;
-            color: #888888;
-            background-color: #d3ffd3;
-            cursor: default;
-        }
-        ul.materias li.locked {
-            color: #bbb;
-            cursor: not-allowed;
-            background-color: #f9f9f9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Malla Curricular - Administración de Empresas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+    .semestre {
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    .semestre h2 {
+      font-size: 18px;
+      color: #004080;
+      margin-bottom: 10px;
+    }
+    .materia {
+      background: #e6f0ff;
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .materia.locked {
+      background: #eee;
+      color: #888;
+      cursor: not-allowed;
+    }
+    .materia.completed {
+      text-decoration: line-through;
+      background: #d4edda;
+      color: #155724;
+    }
+    footer {
+      background-color: #004080;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+<header>
+  <h1>Malla Curricular - Administración de Empresas</h1>
+  <h3>Universidad de las Fuerzas Armadas - ESPE</h3>
+</header>
 
-    <h1>Malla Interactiva - Administración de Empresas</h1>
+<div class="container" id="mallaContainer"></div>
 
-    <div id="malla">
+<footer>
+  <p>© 2025 Universidad de las Fuerzas Armadas - ESPE</p>
+</footer>
 
-        <!-- Semestres -->
-        <div class="semestre" data-sem="1">
-            <h2>Primer Semestre</h2>
-            <ul class="materias">
-                <li data-next="2" class="active">Matemáticas I</li>
-                <li data-next="2" class="active">Introducción a la Administración</li>
-                <li data-next="2" class="active">Contabilidad I</li>
-                <li data-next="2" class="active">Comunicación Oral y Escrita</li>
-                <li data-next="2" class="active">Derecho Empresarial</li>
-                <li data-next="2" class="active">Fundamentos de Economía</li>
-            </ul>
-        </div>
+<script>
+const materias = {
+  '1er Semestre': [
+    { id: 'calculo', nombre: 'Cálculo Diferencial e Integral' },
+    { id: 'mat_fin', nombre: 'Matemática Financiera' },
+    { id: 'cont1', nombre: 'Contabilidad I' },
+    { id: 'admin', nombre: 'Administración' },
+    { id: 'derecho', nombre: 'Derecho Laboral, Societario y Mercantil' },
+    { id: 'met_invest', nombre: 'Metodología de la Investigación Científica' }
+  ],
+  '2do Semestre': [
+    { id: 'estadistica', nombre: 'Estadística', prereq: ['calculo'] },
+    { id: 'mkt', nombre: 'Mercadotecnia', prereq: ['admin'] },
+    { id: 'costos', nombre: 'Contabilidad de Costos', prereq: ['cont1'] },
+    { id: 'procesos', nombre: 'Procesos', prereq: ['admin'] },
+    { id: 'programacion', nombre: 'Programación, Redes y BD' },
+    { id: 'liderazgo', nombre: 'Liderazgo', prereq: ['admin'] }
+  ],
+  '3er Semestre': [
+    { id: 'decision1', nombre: 'Herramientas para la Toma de Decisiones I', prereq: ['calculo', 'estadistica'] },
+    { id: 'micro', nombre: 'Microeconomía', prereq: ['calculo'] },
+    { id: 'fin_corto', nombre: 'Finanzas a Corto Plazo', prereq: ['costos'] },
+    { id: 'teoria_org', nombre: 'Teoría y Estructura de la Organización', prereq: ['procesos'] },
+    { id: 'inv_merc', nombre: 'Investigación de Mercados', prereq: ['estadistica', 'mkt'] },
+    { id: 'realidad', nombre: 'Realidad Nacional y Geopolítica', prereq: ['liderazgo'] }
+  ],
+  '4to Semestre': [
+    { id: 'talento', nombre: 'Gestión del Talento Humano', prereq: ['teoria_org'] },
+    { id: 'macro', nombre: 'Macroeconomía', prereq: ['micro'] },
+    { id: 'fin_largo', nombre: 'Finanzas de Largo Plazo', prereq: ['fin_corto'] },
+    { id: 'estrategica', nombre: 'Gestión Estratégica', prereq: ['teoria_org', 'inv_merc'] },
+    { id: 'sis_info', nombre: 'Sistemas de Información para los Negocios', prereq: ['teoria_org', 'inv_merc', 'estadistica'] },
+    { id: 'tributaria', nombre: 'Gestión Tributaria', prereq: ['costos', 'fin_corto'] }
+  ],
+  '5to Semestre': [
+    { id: 'cultura_org', nombre: 'Cultura y Comportamiento Organizacional', prereq: ['talento'] },
+    { id: 'met_cuant', nombre: 'Métodos Cuantitativos', prereq: ['estadistica', 'calculo', 'sis_info'] },
+    { id: 'presupuesto', nombre: 'Administración Presupuestaria', prereq: ['fin_largo', 'tributaria', 'macro'] },
+    { id: 'calidad', nombre: 'Gestión de la Calidad', prereq: ['estrategica', 'procesos', 'teoria_org'] },
+    { id: 'mkt_estrategica', nombre: 'Mercadotecnia Estratégica', prereq: ['estrategica', 'inv_merc'] },
+    { id: 'conocimiento', nombre: 'Gestión del Conocimiento Aplicado', prereq: ['cultura_org', 'estrategica'] }
+  ],
+  '6to Semestre': [
+    { id: 'auditoria', nombre: 'Auditoría Administrativa y Financiera', prereq: ['presupuesto'] },
+    { id: 'produccion', nombre: 'Administración de la Producción', prereq: ['procesos', 'calidad'] },
+    { id: 'servicios', nombre: 'Gestión de Servicios', prereq: ['mkt_estrategica', 'calidad'] },
+    { id: 'emprendimiento', nombre: 'Gestión y Emprendimiento', prereq: ['liderazgo', 'realidad'] },
+    { id: 'riesgos', nombre: 'Gestión Integral de Riesgos', prereq: ['fin_largo'] }
+  ],
+  '7mo Semestre': [
+    { id: 'diseno_proyectos', nombre: 'Diseño y Evaluación de Proyectos', prereq: ['fin_largo', 'inv_merc', 'calidad'] },
+    { id: 'fin_corp', nombre: 'Finanzas Corporativas', prereq: ['presupuesto'] },
+    { id: 'logistica', nombre: 'Logística Empresarial', prereq: ['calidad', 'produccion'] },
+    { id: 'ecommerce', nombre: 'E-Business / E-Commerce', prereq: ['mkt_estrategica'] },
+    { id: 'gerencia', nombre: 'Gerencia de Proyectos', prereq: ['diseno_proyectos'] },
+    { id: 'abp', nombre: 'ABP (Aprendizaje Basado en Problemas)', prereq: ['riesgos', 'diseno_proyectos', 'fin_corp', 'logistica', 'ecommerce'] }
+  ],
+  '8vo Semestre': [
+    { id: 'plan_estrat', nombre: 'Planificación Estratégica Prospectiva', prereq: ['estrategica'] },
+    { id: 'etica', nombre: 'Empresa, Bioética y Responsabilidad Social', prereq: ['fin_corp', 'estrategica'] },
+    { id: 'negociacion', nombre: 'Negociación y Manejo de Crisis', prereq: ['talento'] },
+    { id: 'comunitario', nombre: 'Prácticas de Servicio Comunitario' },
+    { id: 'practicas', nombre: 'Prácticas Laborales' },
+    { id: 'tic', nombre: 'Trabajo de Integración Curricular', prereq: ['comunitario', 'practicas'] }
+  ]
+};
 
-        <div class="semestre" data-sem="2">
-            <h2>Segundo Semestre</h2>
-            <ul class="materias">
-                <li data-next="3" class="locked">Matemáticas II</li>
-                <li data-next="3" class="locked">Estadística I</li>
-                <li data-next="3" class="locked">Contabilidad II</li>
-                <li data-next="3" class="locked">Teoría de la Administración</li>
-                <li data-next="3" class="locked">Microeconomía</li>
-                <li data-next="3" class="locked">Mercadotecnia I</li>
-            </ul>
-        </div>
+function createSemestre(title, materias) {
+  const div = document.createElement('div');
+  div.className = 'semestre';
+  const h2 = document.createElement('h2');
+  h2.textContent = title;
+  div.appendChild(h2);
 
-        <div class="semestre" data-sem="3">
-            <h2>Tercer Semestre</h2>
-            <ul class="materias">
-                <li data-next="4" class="locked">Matemáticas III</li>
-                <li data-next="4" class="locked">Estadística II</li>
-                <li data-next="4" class="locked">Contabilidad III</li>
-                <li data-next="4" class="locked">Macroeconomía</li>
-                <li data-next="4" class="locked">Mercadotecnia II</li>
-                <li data-next="4" class="locked">Derecho Laboral</li>
-            </ul>
-        </div>
+  materias.forEach(m => {
+    const matDiv = document.createElement('div');
+    matDiv.className = 'materia';
+    matDiv.id = m.id;
+    matDiv.textContent = m.nombre;
+    if (m.prereq) matDiv.classList.add('locked');
+    matDiv.addEventListener('click', () => {
+      if (matDiv.classList.contains('locked')) return;
+      matDiv.classList.toggle('completed');
+      localStorage.setItem(m.id, matDiv.classList.contains('completed'));
+      updateMaterias();
+    });
+    div.appendChild(matDiv);
+  });
 
-        <div class="semestre" data-sem="4">
-            <h2>Cuarto Semestre</h2>
-            <ul class="materias">
-                <li data-next="5" class="locked">Investigación de Mercados</li>
-                <li data-next="5" class="locked">Finanzas I</li>
-                <li data-next="5" class="locked">Gestión de Recursos Humanos</li>
-                <li data-next="5" class="locked">Costos y Presupuestos</li>
-                <li data-next="5" class="locked">Comportamiento Organizacional</li>
-                <li data-next="5" class="locked">Sistemas de Información</li>
-            </ul>
-        </div>
+  return div;
+}
 
-        <div class="semestre" data-sem="5">
-            <h2>Quinto Semestre</h2>
-            <ul class="materias">
-                <li data-next="6" class="locked">Finanzas II</li>
-                <li data-next="6" class="locked">Comercio Internacional</li>
-                <li data-next="6" class="locked">Planificación Estratégica</li>
-                <li data-next="6" class="locked">Producción y Operaciones</li>
-                <li data-next="6" class="locked">Legislación Comercial</li>
-                <li data-next="6" class="locked">Administración de Proyectos</li>
-            </ul>
-        </div>
+function updateMaterias() {
+  for (const [semestre, lista] of Object.entries(materias)) {
+    lista.forEach(m => {
+      const el = document.getElementById(m.id);
+      const done = localStorage.getItem(m.id) === 'true';
+      if (done) {
+        el.classList.add('completed');
+        el.classList.remove('locked');
+      }
+      if (m.prereq) {
+        const ready = m.prereq.every(pr => localStorage.getItem(pr) === 'true');
+        el.classList.toggle('locked', !ready);
+      }
+    });
+  }
+}
 
-        <div class="semestre" data-sem="6">
-            <h2>Sexto Semestre</h2>
-            <ul class="materias">
-                <li data-next="7" class="locked">Auditoría</li>
-                <li data-next="7" class="locked">Gestión de Calidad</li>
-                <li data-next="7" class="locked">Emprendimiento</li>
-                <li data-next="7" class="locked">Ética Profesional</li>
-                <li data-next="7" class="locked">Administración Financiera</li>
-                <li data-next="7" class="locked">Negocios Electrónicos</li>
-            </ul>
-        </div>
+const container = document.getElementById('mallaContainer');
+for (const [semestre, lista] of Object.entries(materias)) {
+  container.appendChild(createSemestre(semestre, lista));
+}
+updateMaterias();
+</script>
 
-        <div class="semestre" data-sem="7">
-            <h2>Séptimo Semestre</h2>
-            <ul class="materias">
-                <li data-next="8" class="locked">Administración de la Producción</li>
-                <li data-next="8" class="locked">Innovación Empresarial</li>
-                <li data-next="8" class="locked">Toma de Decisiones</li>
-                <li data-next="8" class="locked">Gestión del Talento Humano</li>
-                <li data-next="8" class="locked">Responsabilidad Social</li>
-                <li data-next="8" class="locked">Análisis Financiero</li>
-            </ul>
-        </div>
-
-        <div class="semestre" data-sem="8">
-            <h2>Octavo Semestre</h2>
-            <ul class="materias">
-                <li class="locked">Trabajo de Titulación</li>
-                <li class="locked">Seminario de Investigación</li>
-                <li class="locked">Electiva I</li>
-                <li class="locked">Electiva II</li>
-                <li class="locked">Prácticas Empresariales</li>
-            </ul>
-        </div>
-
-    </div>
-
-    <script>
-        // Al cargar la página, activar solo el primer semestre
-        document.addEventListener('DOMContentLoaded', () => {
-            const materias = document.querySelectorAll('ul.materias li');
-            materias.forEach(materia => {
-                if (!materia.classList.contains('locked')) {
-                    materia.classList.add('active');
-                }
-            });
-
-            // Listener para click en materias activas
-            materias.forEach(materia => {
-                materia.addEventListener('click', () => {
-                    if (materia.classList.contains('locked') || materia.classList.contains('completed')) {
-                        return; // No hace nada si está bloqueada o ya completada
-                    }
-                    // Marcar como completada
-                    materia.classList.toggle('completed');
-
-                    // Si está completada, desbloquear el siguiente semestre
-                    if (materia.classList.contains('completed')) {
-                        const nextSem = materia.getAttribute('data-next');
-                        if (nextSem) {
-                            desbloquearSemestre(nextSem);
-                        }
-                    } else {
-                        // Si se desmarca, bloquear los semestres posteriores
-                        bloquearSemestresPosteriores(parseInt(materia.closest('.semestre').dataset.sem) + 1);
-                    }
-                });
-            });
-
-            function desbloquearSemestre(numSemestre) {
-                const semestre = document.querySelector(`.semestre[data-sem="${numSemestre}"]`);
-                if (!semestre) return;
-                const materias = semestre.querySelectorAll('li.locked');
-                materias.forEach(materia => {
-                    materia.classList.remove('locked');
-                    materia.classList.add('active');
-                });
-            }
-
-            function bloquearSemestresPosteriores(inicio) {
-                for (let i = inicio; i <= 8; i++) {
-                    const semestre = document.querySelector(`.semestre[data-sem="${i}"]`);
-                    if (!semestre) continue;
-                    const materias = semestre.querySelectorAll('li');
-                    materias.forEach(materia => {
-                        materia.classList.remove('active', 'completed');
-                        materia.classList.add('locked');
-                    });
-                }
-            }
-        });
-    </script>
 </body>
 </html>
-
     
